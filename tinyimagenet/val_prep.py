@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[20]:
+# In[ ]:
 
 
 import pandas as pd
@@ -9,49 +9,57 @@ import os
 import shutil
 
 
-# In[6]:
+# In[ ]:
 
 
-data = pd.read_table('val_annotations.txt',header=None)
+DIR = os.path.join(os.environ['HOME'],'dataset','tiny-imagenet-200','val')
+print(DIR)
 
 
-# In[11]:
+# In[ ]:
+
+
+data = pd.read_table(os.path.join(DIR,'val_annotations.txt'),header=None)
+
+
+# In[ ]:
 
 
 data.head()
 
 
-# In[15]:
+# In[ ]:
 
 
 class_ids = sorted(data[1].unique())
 
 
-# In[16]:
+# In[ ]:
 
 
 len(class_ids)
 
 
-# In[19]:
+# In[ ]:
 
 
 for class_id in class_ids:
-    os.mkdir(os.path.join('images',class_id))
+    os.mkdir(os.path.join(DIR,class_id))
+    os.mkdir(os.path.join(DIR,class_id,'images'))
 
 
-# In[26]:
+# In[ ]:
 
 
 files = data[0]
 class_ids = data[1]
 
 
-# In[27]:
+# In[ ]:
 
 
 for i,file in enumerate(files):
-    shutil.move(os.path.join('images',file),os.path.join('images',class_ids[i]))
+    shutil.move(os.path.join(DIR,'images',file),os.path.join(DIR,class_ids[i],'images'))
 
 
 # In[ ]:
