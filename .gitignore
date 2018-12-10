@@ -1,0 +1,12 @@
+## .gitignore ##
+# ignore all
+*
+# allow any
+!/*
+!*.py
+!*.ipynb
+!*.md
+!.gitignore
+
+# deny
+.ipynb_checkpoints
