@@ -93,7 +93,7 @@ config = {
     'height':10
 }
 
-columns = 100
+columns = 70
 
 while True:
     try:
@@ -117,15 +117,13 @@ while True:
                     graph = plot(df[gpu].values, config)
                     print(graph)
                     n_rows += len(graph.splitlines()) + 1
-                else:
-                    n_rows -= 1
             else:
                 print(gpu)
                 graph = plot(df[gpu].values, config)
                 print(graph)
                 n_rows += len(graph.splitlines()) + 1
         print("\u001B[%dA" % n_rows, end="", flush=True)
-        time.sleep(1/10)
+        time.sleep(1)
 
     except KeyboardInterrupt:
         break
