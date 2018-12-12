@@ -5,6 +5,7 @@ import time
 import datetime
 import pandas as pd
 from math import floor,ceil
+import argparse
 
 from pynvml import (nvmlInit,
                      nvmlDeviceGetCount, 
@@ -77,6 +78,13 @@ def plot(series, cfg={}):
 
     return '\n'.join([''.join(row) for row in result])
 
+parser = argparse.ArgumentParser(description='nvidia-gpu usage plot')
+parser.add_argument('-g','--gpus',type=str)
+args = parser.parse_args()
+
+if args.gpus:
+    gpu_idx = args.gpus.split(',')
+
 utils = []
 
 config = {
@@ -102,11 +110,20 @@ while True:
         
         gpus = df.columns
         n_rows = 0
-        for gpu in gpus:
-            print(gpu)
-            graph = plot(df[gpu].values, config)
-            print(graph)
-            n_rows += len(graph.splitlines()) + 1
+        for i,gpu in enumerate(gpus):
+            if args.gpus:
+                if str(i) in gpu_idx:
+                    print(gpu)
+                    graph = plot(df[gpu].values, config)
+                    print(graph)
+                    n_rows += len(graph.splitlines()) + 1
+                else:
+                    n_rows -= 1
+            else:
+                print(gpu)
+                graph = plot(df[gpu].values, config)
+                print(graph)
+                n_rows += len(graph.splitlines()) + 1
         print("\u001B[%dA" % n_rows, end="", flush=True)
         time.sleep(1/10)
 
