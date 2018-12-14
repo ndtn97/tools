@@ -11,7 +11,8 @@ from pynvml import (nvmlInit,
                      nvmlDeviceGetCount, 
                      nvmlDeviceGetHandleByIndex, 
                      nvmlDeviceGetUtilizationRates,
-                     nvmlDeviceGetName)
+                     nvmlDeviceGetName,
+                     nvmlDeviceGetMemoryInfo)
 
 def gpu_info():
     "Returns a tuple of (GPU ID, GPU Description, GPU % Utilization)"
@@ -22,7 +23,8 @@ def gpu_info():
         handle = nvmlDeviceGetHandleByIndex(i) 
         util = nvmlDeviceGetUtilizationRates(handle)
         desc = nvmlDeviceGetName(handle) 
-        info.append((i, desc, util.gpu)) #['GPU %i - %s' % (i, desc)] = util.gpu
+        mem = nvmlDeviceGetMemoryInfo(handle)
+        info.append((i, desc, util.gpu, mem)) # ['GPU %i - %s' % (i, desc)] = util.gpu
     return info
 
 # -----------------------------------------------------------------------------
@@ -106,8 +108,8 @@ while True:
         if len(utils) == 1:
             continue
         df = pd.DataFrame(utils, columns=['dt'] + 
-                          ['GPU %i - %s' % (x[0], x[1].decode()) for x in util]).set_index('dt')
-        
+                          ['GPU %i - %s [MEM]%dMiB/%dMiB' % (x[0], x[1].decode(),x[3].used>>20,x[3].total>>20) for x in util]).set_index('dt')
+        #print(df.head())
         gpus = df.columns
         n_rows = 0
         for i,gpu in enumerate(gpus):
@@ -123,7 +125,7 @@ while True:
                 print(graph)
                 n_rows += len(graph.splitlines()) + 1
         print("\u001B[%dA" % n_rows, end="", flush=True)
-        time.sleep(1)
+        time.sleep(0.5)
 
     except KeyboardInterrupt:
         break
