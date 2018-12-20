@@ -7,12 +7,16 @@
 import pandas as pd
 import os
 import shutil
+import argparse
 
+parser = argparse.ArgumentParser(description='Validation Prepare')
+parser.add_argument('--dir',default=os.path.join(os.environ['HOME'],'dataset','tiny-imagenet-200','val'))
+args = parser.parse_args()
 
 # In[ ]:
 
 
-DIR = os.path.join(os.environ['HOME'],'dataset','tiny-imagenet-200','val')
+DIR = args.dir
 print(DIR)
 
 
