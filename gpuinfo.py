@@ -92,7 +92,7 @@ utils = []
 config = {
     'minimum':0,
     'maximum':100,
-    'height':10
+    'height':8
 }
 
 columns = 70
