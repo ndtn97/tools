@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-#import matplotlib as mpl
+#!/usr/bin/python
 import matplotlib.pyplot as plt
 from PIL import Image
 from numpy import asarray
